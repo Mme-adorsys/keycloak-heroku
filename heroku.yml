@@ -1,8 +1,11 @@
 setup:
-    addons:
-        - plan: heroku-postgresql:mini
-          as: DATABASE
+  addons:
+    - plan: heroku-postgresql:mini
+      as: DATABASE
+      config:
+        DATABASE_URL: ${HEROKU_POSTGRESQL_MINI_URL}
+
 build:
-    docker:
-        web: Dockerfile_Alternative
+  docker:
+    web: Dockerfile_Alternative
 
