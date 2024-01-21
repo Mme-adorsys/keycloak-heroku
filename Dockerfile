@@ -8,7 +8,7 @@ ENV KC_METRICS_ENABLED=true
 ENV KC_DB=postgres
 
 COPY theme /opt/keycloak/themes
-COPY keycloak-extensions/target/keycloak-extensions.jar /opt/keycloak/providers/
+COPY target/keycloak-extensions.jar /opt/keycloak/providers/
 COPY docker-entrypoint.sh /opt/jboss/tools
 
 WORKDIR /opt/keycloak
