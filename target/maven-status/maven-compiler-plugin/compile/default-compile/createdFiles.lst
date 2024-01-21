@@ -1,0 +1,3 @@
+de/flendly/keycloak/spi/event/RegistrationRoleMapperListenerFactory.class
+de/flendly/keycloak/spi/event/AbstractEventListenerProviderFactory.class
+de/flendly/keycloak/spi/event/RegistrationRoleMappingListener.class
