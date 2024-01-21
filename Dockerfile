@@ -1,30 +1,14 @@
-FROM quay.io/keycloak/keycloak:latest as builder
+FROM jboss/keycloak:latest
 
-# Enable health and metrics support
-ENV KC_HEALTH_ENABLED=true
-ENV KC_METRICS_ENABLED=true
-
-# Configure a database vendor
-ENV KC_DB=postgres
-
-COPY theme /opt/keycloak/themes
-COPY target/keycloak-extensions.jar /opt/keycloak/providers/
 COPY docker-entrypoint.sh /opt/jboss/tools
 
-WORKDIR /opt/keycloak
-# for demonstration purposes only, please make sure to use proper certificates in production instead
-RUN keytool -genkeypair -storepass password -storetype PKCS12 -keyalg RSA -keysize 2048 -dname "CN=server" -alias server -ext "SAN:c=DNS:localhost,IP:127.0.0.1" -keystore conf/server.keystore
-RUN /opt/keycloak/bin/kc.sh build
+COPY theme /opt/jboss/keycloak/themes/
+COPY target/keycloak-extensions.jar /opt/jboss/keycloak/standalone/deployments/
 
-FROM quay.io/keycloak/keycloak:latest
-COPY --from=builder /opt/keycloak/ /opt/keycloak/
+COPY docker-entrypoint.sh /opt/jboss/tools
+ENV KEYCLOAK_THEME_NAME=flendly
+ENV KEYCLOAK_EXTENSIONS=keycloak-extensions.jar
 
-# change these values to point to a running postgres instance
-#ENV KC_DB=postgres
-#ENV KC_DB_URL=jdbc:postgresql://ec2-34-250-252-161.eu-west-1.compute.amazonaws.com:5432/d4ifbn202bb387
-#ENV KC_DB_USERNAME=aegtoypduvazxr
-#ENV KC_DB_PASSWORD=6bf70a9d987390c4839259154f652e4ebe14b09a8df90d919892b5a064be4e77
-#ENV KC_HOSTNAME=ec2-34-250-252-161.eu-west-1.compute.amazonaws.com
-ENTRYPOINT ["/opt/keycloak/bin/kc.sh"]
-CMD ["start-dev"]
+ENTRYPOINT [ "/opt/jboss/tools/docker-entrypoint.sh" ]
+CMD ["-b", "0.0.0.0"]
 
