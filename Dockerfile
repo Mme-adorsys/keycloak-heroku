@@ -25,5 +25,5 @@ COPY --from=builder /opt/keycloak/ /opt/keycloak/
 #ENV KC_DB_USERNAME=aegtoypduvazxr
 #ENV KC_DB_PASSWORD=6bf70a9d987390c4839259154f652e4ebe14b09a8df90d919892b5a064be4e77
 #ENV KC_HOSTNAME=ec2-34-250-252-161.eu-west-1.compute.amazonaws.com
+ENTRYPOINT ["/opt/keycloak/bin/kc.sh"]
 
-RUN /opt/keycloak/bin/kc.sh start
